@@ -1,3 +1,21 @@
+import httpx
+from fastapi import HTTPException, status
+
+
+class AnotherServiceException(HTTPException):
+    '''Exception to raise when another microservice raises exception.'''
+
+    def __init__(self, response: httpx.Response) -> None:
+        super().__init__(response.status_code, response.json())
+
+
+class PasswordInvalidException(HTTPException):
+    '''Exception to raise when `AUTH_SERVICE` return `is_verify=False`.'''
+
+    def __init__(self) -> None:
+        super().__init__(status.HTTP_401_UNAUTHORIZED, detail='Invalid password')
+
+
 class ObjectDoesNotExistException(Exception):
     def __init__(
         self, obj_name: str | None = 'object', obj_id: int | None = None

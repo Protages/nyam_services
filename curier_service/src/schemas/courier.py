@@ -26,3 +26,21 @@ class CourierSchema(CourierBaseSchema):
 
     class Config:
         from_attributes = True
+
+
+class CourierForGetTokenSchema(BaseModel):
+    id: int
+    password: str
+
+    class Config:
+        from_attributes = True
+
+
+class LoginSchema(BaseModel):
+    phone_number: str
+    password: str
+
+
+class TokenSchema(BaseModel):
+    token: str
+    token_type: str

@@ -6,7 +6,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.schemas.courier import (
     CourierUpdateSchema,
     CourierCreateSchema,
-    CourierSchema
+    CourierSchema,
+    LoginSchema,
+    TokenSchema,
 )
 from src.database.db import get_async_session
 from src.api.http.depends import courier_service
@@ -64,3 +66,13 @@ async def delete_courier(
 ):
     await courier_service.delete(id, session)
     return None
+
+
+@router.post(path='/login/', response_model=TokenSchema)
+async def login(
+    data: LoginSchema,
+    session: Annotated[AsyncSession, Depends(get_async_session)],
+    courier_service: Annotated[CourierService, Depends(courier_service)]
+):
+    token_schema = await courier_service.login(data, session)
+    return token_schema

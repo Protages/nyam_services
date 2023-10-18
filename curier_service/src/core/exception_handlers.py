@@ -1,11 +1,28 @@
 from fastapi import FastAPI, status, Request
 from fastapi.responses import JSONResponse
 
-from src.core.exceptions import ObjectDoesNotExistException, UniqueFailedException
+from src.core.exceptions import (
+    AnotherServiceException,
+    PasswordInvalidException,
+    ObjectDoesNotExistException,
+    UniqueFailedException,
+)
 
 
 def install_exception_handlers(app: FastAPI) -> None:
     '''Install all `exception handlers` by calling only this function.'''
+
+    @app.exception_handler(AnotherServiceException)
+    async def another_service_exception_handler(
+        request: Request, exc: AnotherServiceException
+    ):
+        return JSONResponse(status_code=exc.status_code, content=exc.detail)
+
+    @app.exception_handler(PasswordInvalidException)
+    async def password_invalid_exception_handler(
+        request: Request, exc: PasswordInvalidException
+    ):
+        return JSONResponse(status_code=exc.status_code, content=exc.detail)
 
     @app.exception_handler(ObjectDoesNotExistException)
     async def object_does_not_exist_exception_handler(

@@ -2,7 +2,14 @@ from fastapi.encoders import jsonable_encoder
 from sqlalchemy import select, insert, delete, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.schemas.courier import CourierUpdateSchema, CourierCreateSchema, CourierSchema
+from src.schemas.courier import (
+    CourierUpdateSchema, 
+    CourierCreateSchema, 
+    CourierSchema, 
+    LoginSchema, 
+    TokenSchema,
+    CourierForGetTokenSchema,
+)
 from src.repositories.courier.abstract import CourierAbcRepo
 from src.core.exceptions import ObjectDoesNotExistException
 from src.models.courier import CourierTable
@@ -22,7 +29,19 @@ class CourierSQLAlchemyRepo(CourierAbcRepo):
         
         courier_schema = CourierSchema.model_validate(courier_db[0])
         return courier_schema
-    
+
+    async def get_by_phone_number(
+        self, phone_number: str, session: AsyncSession
+    ) -> CourierForGetTokenSchema:
+        stmt = select(CourierTable).where(CourierTable.phone_number==phone_number)
+        res = await session.execute(stmt)
+        courier_db = res.fetchone()
+        if not courier_db:
+            raise ObjectDoesNotExistException(obj_name='courier')
+        
+        courier_schema = CourierForGetTokenSchema.model_validate(courier_db[0])
+        return courier_schema
+
     async def get_all(self, session: AsyncSession) -> list[CourierSchema]:
         stmt = select(CourierTable)
         res = await session.execute(stmt)
@@ -67,7 +86,7 @@ class CourierSQLAlchemyRepo(CourierAbcRepo):
     ) -> CourierSchema:
         data_dict: dict = jsonable_encoder(create_data, exclude_unset=True)
 
-        hashed_password: str = create_data.password + 'HS256'
+        hashed_password: str = create_data.password
         data_dict['password'] = hashed_password
 
         stmt = insert(CourierTable).values(**data_dict).returning('*')

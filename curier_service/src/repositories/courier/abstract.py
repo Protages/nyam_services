@@ -3,7 +3,14 @@ from abc import abstractmethod
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.utils.repository import BaseAbcRepo
-from src.schemas.courier import CourierUpdateSchema, CourierCreateSchema, CourierSchema
+from src.schemas.courier import (
+    CourierUpdateSchema,
+    CourierCreateSchema,
+    CourierSchema,
+    LoginSchema,
+    TokenSchema,
+    CourierForGetTokenSchema,
+)
 
 
 class CourierAbcRepo(BaseAbcRepo):
@@ -11,6 +18,12 @@ class CourierAbcRepo(BaseAbcRepo):
 
     @abstractmethod
     async def get_by_id(self, id: int, session: AsyncSession) -> CourierSchema:
+        raise NotImplementedError
+    
+    @abstractmethod
+    async def get_by_phone_number(
+        self, phone_number: str, session: AsyncSession
+    ) -> CourierForGetTokenSchema:
         raise NotImplementedError
     
     @abstractmethod
