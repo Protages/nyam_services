@@ -1,0 +1,10 @@
+*.log
+*.db
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+.vscode/
+.idea/
+.migrations/
+.pytest_cache/
