@@ -29,8 +29,7 @@ class VerifyPasswordAndGetTokenOutputSchema(
     VerifyPasswordOutputSchema,
     GetTokenOutputSchema
 ):
-    token: str | None = None
-    token_type: str | None = None
+    pass
 
 
 class VerifyTokenInputSchema(BaseModel):

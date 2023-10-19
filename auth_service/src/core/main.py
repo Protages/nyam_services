@@ -5,7 +5,7 @@ from src.api.api import api_router
 from src.core.exception_handlers import install_exception_handlers
 
 
-app = FastAPI()
+app = FastAPI(title='Auth Service')
 app.include_router(api_router)
 
 install_exception_handlers(app)

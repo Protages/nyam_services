@@ -9,6 +9,11 @@ class PasswordHashNotIdentifiedException(HTTPException):
         )
 
 
+class PasswordInvalidException(HTTPException):
+    def __init__(self) -> None:
+        super().__init__(status.HTTP_401_UNAUTHORIZED, detail='Invalid password')
+
+
 class TokenCredentialsException(HTTPException):
     def __init__(self) -> None:
         super().__init__(

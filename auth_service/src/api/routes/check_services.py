@@ -38,13 +38,13 @@ async def check_customer_service_working():
 
 
 @router.get('/check/restaurant', response_model=CheckServiceResponseSchema)
-async def check_courier_service_working():
+async def check_restaurant_service_working():
     url = f'{settings.RESTAURANT_SERVICE_URL}api/v1/service_working'
     return await __check_service_working(url)
 
 
 @router.get('/check/courier', response_model=CheckServiceResponseSchema)
-async def check_auth_service_working():
+async def check_courier_service_working():
     url = f'{settings.COURIER_SERVICE_URL}api/v1/service_working'
     return await __check_service_working(url)
 

@@ -9,13 +9,6 @@ class AnotherServiceException(HTTPException):
         super().__init__(response.status_code, response.json())
 
 
-class PasswordInvalidException(HTTPException):
-    '''Exception to raise when `AUTH_SERVICE` return `is_verify=False`.'''
-
-    def __init__(self) -> None:
-        super().__init__(status.HTTP_401_UNAUTHORIZED, detail='Invalid password')
-
-
 class ObjectDoesNotExistException(Exception):
     def __init__(
         self, obj_name: str | None = 'object', obj_id: int | None = None

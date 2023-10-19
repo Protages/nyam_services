@@ -1,4 +1,5 @@
 from abc import abstractmethod
+from typing import Any
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -7,41 +8,37 @@ from src.schemas.courier import (
     CourierUpdateSchema,
     CourierCreateSchema,
     CourierSchema,
-    LoginSchema,
-    TokenSchema,
-    CourierForGetTokenSchema,
 )
+from src.schemas.login import CourierForGetTokenSchema
 
 
 class CourierAbcRepo(BaseAbcRepo):
     '''Base repository for another Courier respositories.'''
 
     @abstractmethod
-    async def get_by_id(self, id: int, session: AsyncSession) -> CourierSchema:
+    def __init__(self, session: Any) -> None:
         raise NotImplementedError
-    
+
     @abstractmethod
-    async def get_by_phone_number(
-        self, phone_number: str, session: AsyncSession
-    ) -> CourierForGetTokenSchema:
+    async def get_by_id(self, id: int) -> CourierSchema:
         raise NotImplementedError
-    
+
     @abstractmethod
-    async def get_all(self, session: AsyncSession) -> list[CourierSchema]:
+    async def get_by_phone_number(self, phone_number: str) -> CourierForGetTokenSchema:
         raise NotImplementedError
-    
+
     @abstractmethod
-    async def update(
-        self, id: int, update_data: CourierUpdateSchema, session: AsyncSession
-    ) -> CourierSchema:
+    async def get_all(self) -> list[CourierSchema]:
         raise NotImplementedError
-    
+
     @abstractmethod
-    async def create(
-        self, create_data: CourierCreateSchema, session: AsyncSession
-    ) -> CourierSchema:
+    async def update(self, id: int, update_data: CourierUpdateSchema) -> CourierSchema:
         raise NotImplementedError
-    
+
     @abstractmethod
-    async def delete(self, id: int, session: AsyncSession) -> None:
+    async def create(self, create_data: CourierCreateSchema) -> CourierSchema:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def delete(self, id: int) -> None:
         raise NotImplementedError

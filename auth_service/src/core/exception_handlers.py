@@ -6,6 +6,7 @@ from src.core.exceptions import (
     TokenCredentialsException,
     TokenExpiredException,
     TokenInvalidClaimsException,
+    PasswordInvalidException,
 )
 
 
@@ -15,6 +16,13 @@ def install_exception_handlers(app: FastAPI) -> None:
     @app.exception_handler(PasswordHashNotIdentifiedException)
     async def password_hash_not_identified_exception_handler(
         request: Request, exc: PasswordHashNotIdentifiedException
+    ):
+        content = {'datail': exc.detail}
+        return JSONResponse(status_code=exc.status_code, content=content)
+    
+    @app.exception_handler(PasswordInvalidException)
+    async def password_invalid_exception_handler(
+        request: Request, exc: PasswordInvalidException
     ):
         content = {'datail': exc.detail}
         return JSONResponse(status_code=exc.status_code, content=content)
