@@ -1,0 +1,8 @@
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+.vscode/
+.idea/
+.coverage
+# db.sqlite3

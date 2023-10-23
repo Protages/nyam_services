@@ -1,23 +1,47 @@
 version: '3.8'
 
 services:
-  auth_service:
+  customer_service:
     build:
-      context: ./auth_service
+      context: ./customer_service
       dockerfile: Dockerfile
+    image: customer_image
     command: |
       bash -c "
-      uvicorn --port=8005 --host=0.0.0.0 src.core.main:app --reload
+      uvicorn --port=8001 --host=0.0.0.0 src.core.main:app --reload
       "
     volumes:
-      - ./:/usr/src/auth_service/
+      - ./:/usr/src/customer_service/
     ports:
-      - 8005:8005
+      - 8001:8001
+    environment:
+      - SERVICE_ENV=.env
+    env_file:
+      - .env.common.dev
+
+  restaurant_service:
+    build:
+      context: ./restaurant_service
+      dockerfile: Dockerfile
+    image: restaurant_image
+    command: |
+      bash -c "
+      uvicorn --port=8002 --host=0.0.0.0 src.core.main:app --reload
+      "
+    volumes:
+      - ./:/usr/src/restaurant_service/
+    ports:
+      - 8002:8002
+    environment:
+      - SERVICE_ENV=.env
+    env_file:
+      - .env.common.dev
 
   courier_service:
     build:
       context: ./courier_service
       dockerfile: Dockerfile
+    image: courier_image
     command: |
       bash -c "
       uvicorn --port=8003 --host=0.0.0.0 src.core.main:app --reload
@@ -26,3 +50,25 @@ services:
       - ./:/usr/src/courier_service/
     ports:
       - 8003:8003
+    environment:
+      - SERVICE_ENV=.env
+    env_file:
+      - .env.common.dev
+
+  auth_service:
+    build:
+      context: ./auth_service
+      dockerfile: Dockerfile
+    image: auth_image
+    command: |
+      bash -c "
+      uvicorn --port=8005 --host=0.0.0.0 src.core.main:app --reload
+      "
+    volumes:
+      - ./:/usr/src/auth_service/
+    ports:
+      - 8005:8005
+    environment:
+      - SERVICE_ENV=.env
+    env_file:
+      - .env.common.dev
