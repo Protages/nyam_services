@@ -1,7 +1,6 @@
 import os
 from functools import lru_cache
 
-# from pydantic import EmailStr, HttpUrl
 from pydantic_settings import BaseSettings
 
 
@@ -15,14 +14,10 @@ class Settings(BaseSettings):
     NOTIFICATION_SERVICE_URL: str = 'http://127.0.0.1:8006/'
 
     # JWT token
-    # SECKET_KEY: str = '4b42c95007644afae6d74c9df95a5b5829200e130dfad17bbbf0d59230a16484'
-    SECKET_KEY: str = '4b42c95007644afae6d74c9df95a5b5829200e130dfad17bbbf0d5923'
+    SECKET_KEY: str = '4b42c95007644afae6d74c9df95a5b5829200e130dfad17bbbf0d59230a16484'
     ALGORITHM: str = 'HS256'
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     TOKEN_TYPE: str = 'Bearer'
-
-    # class Config:
-    #     env_file = os.environ.get('ENV_FILE', '.env.dev')
 
 
 @lru_cache

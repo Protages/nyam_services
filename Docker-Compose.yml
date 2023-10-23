@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  auth_service:
+    build:
+      context: ./auth_service
+      dockerfile: Dockerfile
+    command: |
+      bash -c "
+      uvicorn --port=8005 --host=0.0.0.0 src.core.main:app --reload
+      "
+    volumes:
+      - ./:/usr/src/auth_service/
+    ports:
+      - 8005:8005
+
+  courier_service:
+    build:
+      context: ./courier_service
+      dockerfile: Dockerfile
+    command: |
+      bash -c "
+      uvicorn --port=8003 --host=0.0.0.0 src.core.main:app --reload
+      "
+    volumes:
+      - ./:/usr/src/courier_service/
+    ports:
+      - 8003:8003

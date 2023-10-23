@@ -5,7 +5,7 @@ from src.repositories.courier.abstract import CourierAbcRepo
 
 class UOWBaseAbc(ABC):
     '''
-    Base unit of work absract class. Use example:
+    Context manager. Base unit of work absract class. Use example:
     ```
     async with self.uow:
         res_1: SomeSchema1 = await self.uow.<SOME_REPO_1>.create(data_1)
